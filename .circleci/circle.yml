@@ -32,7 +32,7 @@ jobs:
           name: deploy
           command: '#e.g. ./deploy.sh'
 workflows:
-  build-and-testtest:
+  build-and-test:
     jobs:
       - test-java
     # - deploy:
