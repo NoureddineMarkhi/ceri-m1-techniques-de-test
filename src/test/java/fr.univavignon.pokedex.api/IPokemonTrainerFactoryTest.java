@@ -37,6 +37,7 @@ public class IPokemonTrainerFactoryTest {
         }).when(trainerFactory).createTrainer(anyString(), any(Team.class), any(IPokedexFactory.class));
 
         // Appel de la méthode createTrainer
+
         PokemonTrainer trainer = trainerFactory.createTrainer("Sacha", Team.VALOR, pokedexFactory);
 
         // Vérifications

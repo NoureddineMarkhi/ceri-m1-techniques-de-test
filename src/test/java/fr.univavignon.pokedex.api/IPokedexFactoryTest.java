@@ -25,6 +25,7 @@ public class IPokedexFactoryTest {
     @Test
     public void testCreatePokedex() {
         // Configurer le mock pour créer un pokedex
+
         when(pokedexFactory.createPokedex(metadataProvider, pokemonFactory)).thenReturn(pokedex);
 
         // Appel de la méthode createPokedex
