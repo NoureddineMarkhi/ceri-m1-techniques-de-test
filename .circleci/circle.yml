@@ -1,16 +1,40 @@
+# This config was automatically generated from your source code
+# Stacks detected: deps:java:.
 version: 2.1
-
 jobs:
-  build:
+  test-java:
     docker:
-      - image: circleci/openjdk:11-jdk  # Environnement Java 11 (ou 8 si nécessaire)
+      - image: cimg/openjdk:17.0
     steps:
-      - checkout  # Récupérer le code source depuis GitHub
-
+      - checkout
       - run:
-          name: Maven Clean & Install
-          command: mvn clean install
-
+          name: Calculate cache key
+          command: |-
+            find . -name 'pom.xml' -o -name 'gradlew*' -o -name '*.gradle*' | \
+                    sort | xargs cat > /tmp/CIRCLECI_CACHE_KEY
+      - restore_cache:
+          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
       - run:
-          name: Run Unit Tests
-          command: mvn test
+          command: mvn verify
+      - store_test_results:
+          path: target/surefire-reports
+      - save_cache:
+          key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
+          paths:
+            - ~/.m2/repository
+  deploy:
+    # This is an example deploy job, not actually used by the workflow
+    docker:
+      - image: cimg/base:stable
+    steps:
+      # Replace this with steps to deploy to users
+      - run:
+          name: deploy
+          command: '#e.g. ./deploy.sh'
+workflows:
+  build-and-test:
+    jobs:
+      - test-java
+    # - deploy:
+    #     requires:
+    #       - test-java
