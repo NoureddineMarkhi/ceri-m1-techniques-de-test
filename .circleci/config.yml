@@ -1,14 +1,11 @@
 version: 2.1
 
-orbs:
-  codecov: codecov/codecov@3  # Importer l'orb de Codecov
-
 jobs:
   test-java:
     docker:
-      - image: cimg/openjdk:17.0  # Utiliser l'image OpenJDK 17
+      - image: cimg/openjdk:17.0
     steps:
-      - checkout  # Récupérer le code source depuis GitHub
+      - checkout  # Récupération du code source depuis GitHub
 
       - restore_cache:
           key: cache-{{ checksum "pom.xml" }}
@@ -18,10 +15,11 @@ jobs:
           name: Run Maven Tests with Coverage
           command: mvn clean verify
 
-      # Sauvegarde des résultats de test
+      # Sauvegarder les résultats des tests
       - store_test_results:
           path: target/surefire-reports
 
+      # Sauvegarder le rapport JaCoCo pour inspection
       - store_artifacts:
           path: target/site/jacoco
           destination: jacoco-report
@@ -31,10 +29,13 @@ jobs:
           paths:
             - ~/.m2/repository
 
-      # Publier le rapport JaCoCo sur Codecov
-      - codecov/upload:
-          file: target/site/jacoco/jacoco.xml  # Fichier XML généré par JaCoCo
-          token: $CODECOV_TOKEN  # Déclarer la variable d'environnement dans CircleCI
+      # Uploader manuellement le rapport JaCoCo vers Codecov
+      - run:
+          name: Upload JaCoCo Report to Codecov
+          command: |
+            curl -Os https://uploader.codecov.io/latest/linux/codecov
+            chmod +x codecov
+            ./codecov -t $CODECOV_TOKEN -f target/site/jacoco/jacoco.xml
 
 workflows:
   build-and-test:
