@@ -85,4 +85,7 @@ public class IPokemonFactoryTest {
         // Vérifier que la méthode a bien été appelée
         verify(pokemonFactory).createPokemon(index, cp, hp, dust, candy);
     }
+
+    
+
 }
