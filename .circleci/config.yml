@@ -38,7 +38,3 @@ workflows:
     # - deploy:
     #     requires:
     #       - test-java
-
-orbs:
-  codecov: codecov/codecov@5
-
