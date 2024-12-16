@@ -1,40 +1,48 @@
-# This config was automatically generated from your source code
-# Stacks detected: deps:java:.
 version: 2.1
+
+# Import de l'orb Codecov
+orbs:
+  codecov: codecov/codecov@3.2.4
+
 jobs:
   test-java:
     docker:
       - image: cimg/openjdk:17.0
     steps:
       - checkout
+
+      # Calcul du cache key
       - run:
           name: Calculate cache key
           command: |-
             find . -name 'pom.xml' -o -name 'gradlew*' -o -name '*.gradle*' | \
                     sort | xargs cat > /tmp/CIRCLECI_CACHE_KEY
+
+      # Restauration du cache Maven
       - restore_cache:
           key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
+
+      # Exécution des tests et génération du rapport de couverture JaCoCo
       - run:
-          command: mvn verify
+          name: Run Tests with Coverage
+          command: mvn clean verify
+
+      # Stockage des résultats des tests
       - store_test_results:
           path: target/surefire-reports
+
+      # Sauvegarde du cache Maven
       - save_cache:
           key: cache-{{ checksum "/tmp/CIRCLECI_CACHE_KEY" }}
           paths:
             - ~/.m2/repository
-  deploy:
-    # This is an example deploy job, not actually used by the workflow
-    docker:
-      - image: cimg/base:stable
-    steps:
-      # Replace this with steps to deploy to users
+
+      # Upload du rapport de couverture vers Codecov
       - run:
-          name: deploy
-          command: '#e.g. ./deploy.sh'
+          name: Upload Coverage to Codecov
+          command: bash <(curl -s https://codecov.io/bash) -t ${CODECOV_TOKEN}
+
 workflows:
   build-and-test:
     jobs:
       - test-java
-    # - deploy:
-    #     requires:
-    #       - test-java
