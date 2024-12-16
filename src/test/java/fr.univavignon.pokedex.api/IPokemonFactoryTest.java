@@ -49,6 +49,10 @@ public class IPokemonFactoryTest {
 
         // Vérifier que la méthode a bien été appelée
         verify(pokemonFactory).createPokemon(index, cp, hp, dust, candy);
+
+        // Comparateur: NAME
+        Pokemon otherPokemon = new Pokemon(1, "Aquali", 186, 168, 260, 5000, 202, 5000, 4, 100);
+        assertTrue(PokemonComparators.NAME.compare(result, otherPokemon) < 0, "Bulbizarre should be before Aquali by NAME");
     }
 
     @Test
@@ -84,8 +88,10 @@ public class IPokemonFactoryTest {
 
         // Vérifier que la méthode a bien été appelée
         verify(pokemonFactory).createPokemon(index, cp, hp, dust, candy);
+
+        // Comparateur: INDEX et CP
+        Pokemon otherPokemon = new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 56);
+        assertTrue(PokemonComparators.INDEX.compare(result, otherPokemon) > 0, "Aquali should have a greater INDEX than Bulbizarre");
+        assertTrue(PokemonComparators.CP.compare(result, otherPokemon) > 0, "Aquali should have a greater CP than Bulbizarre");
     }
-
-    
-
 }
