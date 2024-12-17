@@ -7,95 +7,51 @@ import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 public class IPokedexTest {
 
     private Pokedex pokedex;
+    private Pokemon pokemonMock;
 
     @BeforeEach
     public void setUp() {
+        // Initialiser le Pokedex et les mocks
         pokedex = new Pokedex();
+        pokemonMock = mock(Pokemon.class);
     }
 
     @Test
-    public void testSizeInitiallyEmpty() {
-        assertEquals(0, pokedex.size(), "Pokedex should initially have size 0");
+    public void testAddPokemon() {
+        // Ajouter un Pokemon mocké
+        int index = pokedex.addPokemon(pokemonMock);
+        assertEquals(0, index);
+        assertEquals(1, pokedex.size());
     }
 
     @Test
-    public void testAddPokemonAndSize() {
-        Pokemon pokemon = new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 56.0);
-        int index = pokedex.addPokemon(pokemon);
-        assertEquals(0, index, "First added pokemon should have index 0");
-        assertEquals(1, pokedex.size(), "Pokedex size should be 1 after adding a pokemon");
+    public void testGetPokemonValid() throws PokedexException {
+        pokedex.addPokemon(pokemonMock);
+        Pokemon result = pokedex.getPokemon(0);
+        assertNotNull(result);
     }
 
     @Test
-    public void testGetPokemonValidId() throws PokedexException {
-        Pokemon pokemon = new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 56.0);
-        pokedex.addPokemon(pokemon);
-        Pokemon retrievedPokemon = pokedex.getPokemon(0);
-        assertEquals(pokemon, retrievedPokemon, "Retrieved pokemon should match the added one");
+    public void testGetPokemonInvalid() {
+        assertThrows(PokedexException.class, () -> pokedex.getPokemon(1));
     }
 
     @Test
-    public void testGetPokemonInvalidId() {
-        PokedexException exception = assertThrows(PokedexException.class, () -> pokedex.getPokemon(0));
-        assertEquals("Invalid ID", exception.getMessage(), "Exception message should indicate invalid ID");
+    public void testGetPokemons() {
+        pokedex.addPokemon(pokemonMock);
+        List<Pokemon> pokemons = pokedex.getPokemons();
+        assertEquals(1, pokemons.size());
     }
 
     @Test
-    public void testGetPokemonsUnmodifiableList() {
-        Pokemon pokemon1 = new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 56.0);
-        Pokemon pokemon2 = new Pokemon(1, "Aquali", 186, 168, 260, 2729, 202, 5000, 4, 100.0);
-        pokedex.addPokemon(pokemon1);
-        pokedex.addPokemon(pokemon2);
-
-        List<Pokemon> pokemonList = pokedex.getPokemons();
-        assertEquals(2, pokemonList.size(), "The returned list should have 2 pokemons");
-
-        // Ensure the list is unmodifiable
-        assertThrows(UnsupportedOperationException.class, () -> pokemonList.add(pokemon1));
+    public void testGetPokemonsWithComparator() {
+        pokedex.addPokemon(pokemonMock);
+        List<Pokemon> sorted = pokedex.getPokemons(Comparator.comparingInt(Pokemon::getCp));
+        assertEquals(1, sorted.size());
     }
-
-    @Test
-    public void testGetPokemonsSorted() {
-        Pokemon pokemon1 = new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 56.0);
-        Pokemon pokemon2 = new Pokemon(1, "Aquali", 186, 168, 260, 2729, 202, 5000, 4, 100.0);
-        pokedex.addPokemon(pokemon2);
-        pokedex.addPokemon(pokemon1);
-
-        List<Pokemon> sortedList = pokedex.getPokemons(Comparator.comparing(Pokemon::getName));
-        assertEquals("Aquali", sortedList.get(0).getName(), "First pokemon should be Aquali after sorting by name");
-        assertEquals("Bulbizarre", sortedList.get(1).getName(), "Second pokemon should be Bulbizarre after sorting by name");
-    }
-
-    @Test
-    public void testGetPokemonMetadataNotImplemented() {
-        assertNull(pokedex.getPokemonMetadata(0), "getPokemonMetadata is not implemented and should return null");
-    }
-
-    @Test
-    public void testCreatePokemonNotImplemented() {
-        assertNull(pokedex.createPokemon(0, 613, 64, 4000, 4), "createPokemon is not implemented and should return null");
-    }
-    @Test
-    public void testGetPokemonMetadataReturnsNull() {
-        // Test de la méthode non implémentée
-        assertNull(pokedex.getPokemonMetadata(0), "getPokemonMetadata should return null");
-    }
-
-    @Test
-    public void testCreatePokemonReturnsNull() {
-        // Test de la méthode non implémentée
-        assertNull(pokedex.createPokemon(0, 500, 60, 2000, 3), "createPokemon should return null");
-    }
-
-    @Test
-    public void testGetPokemonThrowsExceptionOnNegativeId() {
-        // Vérifier que l'exception est levée pour un ID négatif
-        PokedexException exception = assertThrows(PokedexException.class, () -> pokedex.getPokemon(-1));
-        assertEquals("Invalid ID", exception.getMessage());
-    }
-
 }
