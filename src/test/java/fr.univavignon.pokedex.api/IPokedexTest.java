@@ -13,17 +13,18 @@ public class IPokedexTest {
 
     private Pokedex pokedex;
     private Pokemon pokemonMock;
+    private PokemonMetadata metadataMock;
 
     @BeforeEach
     public void setUp() {
-        // Initialiser le Pokedex et les mocks
+        // Initialisation du Pokedex et des mocks
         pokedex = new Pokedex();
         pokemonMock = mock(Pokemon.class);
+        metadataMock = mock(PokemonMetadata.class);
     }
 
     @Test
     public void testAddPokemon() {
-        // Ajouter un Pokemon mocké
         int index = pokedex.addPokemon(pokemonMock);
         assertEquals(0, index);
         assertEquals(1, pokedex.size());
@@ -38,7 +39,7 @@ public class IPokedexTest {
 
     @Test
     public void testGetPokemonInvalid() {
-        assertThrows(PokedexException.class, () -> pokedex.getPokemon(1));
+        assertThrows(PokedexException.class, () -> pokedex.getPokemon(0));
     }
 
     @Test
@@ -51,8 +52,19 @@ public class IPokedexTest {
     @Test
     public void testGetPokemonsWithComparator() {
         pokedex.addPokemon(pokemonMock);
-        List<Pokemon> sorted = pokedex.getPokemons(Comparator.comparingInt(Pokemon::getCp));
+        List<Pokemon> sorted = pokedex.getPokemons(Comparator.comparing(Pokemon::getName));
         assertEquals(1, sorted.size());
+    }
 
+    @Test
+    public void testGetPokemonMetadata() {
+        // Tester la méthode même si elle retourne null
+        assertNull(pokedex.getPokemonMetadata(0));
+    }
+
+    @Test
+    public void testCreatePokemon() {
+        // Tester la méthode même si elle retourne null
+        assertNull(pokedex.createPokemon(0, 100, 50, 1000, 4));
     }
 }
