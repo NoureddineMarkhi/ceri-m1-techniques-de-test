@@ -16,11 +16,11 @@
         <maven.compiler.target>17</maven.compiler.target>
         <junit.jupiter.version>5.9.3</junit.jupiter.version>
         <mockito.version>5.3.1</mockito.version>
-        <jacoco.version>0.8.11</jacoco.version> <!-- Mise à jour de JaCoCo -->
+        <jacoco.version>0.8.11</jacoco.version>
     </properties>
 
     <dependencies>
-        <!-- JUnit 5 dependency for testing -->
+        <!-- JUnit 5 for testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -28,7 +28,7 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Mockito dependency for mocking -->
+        <!-- Mockito for mocking -->
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
@@ -46,7 +46,7 @@
 
     <build>
         <plugins>
-            <!-- Maven Compiler Plugin -->
+            <!-- Compiler Plugin -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -63,14 +63,12 @@
                 <artifactId>jacoco-maven-plugin</artifactId>
                 <version>${jacoco.version}</version>
                 <executions>
-                    <!-- Préparation de l'agent JaCoCo -->
                     <execution>
                         <id>prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
-                    <!-- Génération des rapports -->
                     <execution>
                         <id>report</id>
                         <phase>verify</phase>
@@ -78,41 +76,51 @@
                             <goal>report</goal>
                         </goals>
                     </execution>
-                    <!-- Vérification de la couverture -->
+                </executions>
+            </plugin>
+
+            <!-- Checkstyle Plugin -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.2.1</version>
+                <executions>
                     <execution>
-                        <id>check</id>
+                        <id>checkstyle</id>
                         <goals>
                             <goal>check</goal>
                         </goals>
-                        <configuration>
-                            <rules>
-                                <rule>
-                                    <element>BUNDLE</element>
-                                    <limits>
-                                        <limit>
-                                            <counter>LINE</counter>
-                                            <value>COVEREDRATIO</value>
-                                            <minimum>0.8</minimum> <!-- Minimum 80% -->
-                                        </limit>
-                                    </limits>
-                                </rule>
-                            </rules>
-                            <!-- Exclure les classes du JDK -->
-                            <excludes>
-                                <exclude>jdk/**</exclude>
-                                <exclude>java/**</exclude>
-                                <exclude>sun/**</exclude>
-                            </excludes>
-                        </configuration>
+                        <phase>validate</phase>
                     </execution>
                 </executions>
+                <configuration>
+                    <configLocation>google_checks.xml</configLocation>
+                    <encoding>UTF-8</encoding>
+                    <consoleOutput>true</consoleOutput>
+                    <failsOnError>true</failsOnError>
+                </configuration>
             </plugin>
         </plugins>
     </build>
 
-    <!-- Configuration pour les rapports JaCoCo -->
+    <!-- Reporting Section -->
     <reporting>
         <plugins>
+            <!-- Checkstyle Report -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.2.1</version>
+                <reportSets>
+                    <reportSet>
+                        <reports>
+                            <report>checkstyle</report>
+                        </reports>
+                    </reportSet>
+                </reportSets>
+            </plugin>
+
+            <!-- JaCoCo Report -->
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
@@ -127,4 +135,5 @@
             </plugin>
         </plugins>
     </reporting>
+
 </project>
