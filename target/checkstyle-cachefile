@@ -1,5 +1,4 @@
-#Tue Dec 17 18:04:08 CET 2024
-D\:\\Techniques\ de\ Test\\ceri-m1-techniques-de-test\\src\\main\\java\\fr\\univavignon\\pokedex\\api\\PokedexException.java=1734360192218
-configuration*?=14F11E98F57149C53B01BD79CCD5F991784A62D6
-module-resource*?\:checkstyle-suppressions.xml=E9C235AC1DEABD9E3B4BF6AA3E6F4649EB47A612
-module-resource*?\:checkstyle-xpath-suppressions.xml=32613CF42B5E0655F8E45B088932B519C9426F70
+#Tue Dec 17 18:28:08 CET 2024
+configuration*?=738FE9C5D4DBE00497B4ABD262EBEF3853A9DDCE
+module-resource*?\:checkstyle-suppressions.xml=56F97C62F4A09A45C1E7E9F02DD81A43E202D447
+module-resource*?\:checkstyle-xpath-suppressions.xml=519CF70E9596BEFF1F10950869A05634F46A7D2E
