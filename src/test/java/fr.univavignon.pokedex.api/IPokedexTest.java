@@ -73,4 +73,16 @@ public class IPokedexTest {
     public void testEmptyPokedexSize() {
         assertEquals(0, pokedex.size());
     }
+    @Test
+    public void testGetPokemonMetadataReturnsNull() {
+        // Vérifie que getPokemonMetadata retourne null pour un index donné
+        assertNull(pokedex.getPokemonMetadata(0), "Expected null for getPokemonMetadata.");
+    }
+
+    @Test
+    public void testCreatePokemonReturnsNull() {
+        // Vérifie que createPokemon retourne null pour des paramètres donnés
+        Pokemon createdPokemon = pokedex.createPokemon(0, 100, 50, 1000, 4);
+        assertNull(createdPokemon, "Expected null for createPokemon.");
+    }
 }
