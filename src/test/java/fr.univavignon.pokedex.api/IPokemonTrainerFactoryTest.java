@@ -8,25 +8,33 @@ import static org.mockito.Mockito.*;
 
 public class IPokemonTrainerFactoryTest {
 
-    private IPokedexFactory pokedexFactory;
+    private IPokedexFactory pokedexFactoryMock;
+    private IPokemonMetadataProvider metadataProviderMock;
+    private IPokemonFactory pokemonFactoryMock;
+    private IPokedex pokedexMock;
     private PokemonTrainerFactory pokemonTrainerFactory;
 
     @BeforeEach
     public void setUp() {
-        pokedexFactory = mock(IPokedexFactory.class);
+        // Création des mocks
+        pokedexFactoryMock = mock(IPokedexFactory.class);
+        metadataProviderMock = mock(IPokemonMetadataProvider.class);
+        pokemonFactoryMock = mock(IPokemonFactory.class);
+        pokedexMock = mock(IPokedex.class);
+
+        // Initialisation de la factory
         pokemonTrainerFactory = new PokemonTrainerFactory();
     }
 
     @Test
     public void testCreateTrainerValidInputs() {
-        // Mock pour IPokedex
-        IPokedex pokedexMock = mock(IPokedex.class);
-        when(pokedexFactory.createPokedex(any(), any())).thenReturn(pokedexMock);
+        // Configurer le comportement du mock
+        when(pokedexFactoryMock.createPokedex(any(), any())).thenReturn(pokedexMock);
 
         // Appel de la méthode
         String trainerName = "Ash";
-        Team team = Team.MYSTIC;
-        PokemonTrainer trainer = pokemonTrainerFactory.createTrainer(trainerName, team, pokedexFactory);
+        Team team = Team.VALOR;
+        PokemonTrainer trainer = pokemonTrainerFactory.createTrainer(trainerName, team, pokedexFactoryMock);
 
         // Vérifications
         assertNotNull(trainer);
@@ -34,15 +42,40 @@ public class IPokemonTrainerFactoryTest {
         assertEquals(team, trainer.getTeam());
         assertEquals(pokedexMock, trainer.getPokedex());
 
-        // Vérifier que createPokedex est appelé une seule fois
-        verify(pokedexFactory).createPokedex(any(), any());
+        // Vérifier que createPokedex a été appelé une fois
+        verify(pokedexFactoryMock, times(1)).createPokedex(any(), any());
     }
 
     @Test
-    public void testCreateTrainerWithNullArguments() {
-        // Vérifier les exceptions si les arguments sont null
-        assertThrows(IllegalArgumentException.class, () -> pokemonTrainerFactory.createTrainer(null, Team.MYSTIC, pokedexFactory));
-        assertThrows(IllegalArgumentException.class, () -> pokemonTrainerFactory.createTrainer("Ash", null, pokedexFactory));
-        assertThrows(IllegalArgumentException.class, () -> pokemonTrainerFactory.createTrainer("Ash", Team.MYSTIC, null));
+    public void testCreateTrainerWithNullName() {
+        // Vérifie qu'une exception est levée si le nom est null
+        assertThrows(IllegalArgumentException.class,
+                () -> pokemonTrainerFactory.createTrainer(null, Team.INSTINCT, pokedexFactoryMock));
+    }
+
+    @Test
+    public void testCreateTrainerWithNullTeam() {
+        // Vérifie qu'une exception est levée si l'équipe est null
+        assertThrows(IllegalArgumentException.class,
+                () -> pokemonTrainerFactory.createTrainer("Ash", null, pokedexFactoryMock));
+    }
+
+    @Test
+    public void testCreateTrainerWithNullFactory() {
+        // Vérifie qu'une exception est levée si le PokedexFactory est null
+        assertThrows(IllegalArgumentException.class,
+                () -> pokemonTrainerFactory.createTrainer("Ash", Team.VALOR, null));
+    }
+
+    @Test
+    public void testCreateTrainerVerifyInteractions() {
+        // Configurer le mock pour retourner un pokedex simulé
+        when(pokedexFactoryMock.createPokedex(any(), any())).thenReturn(pokedexMock);
+
+        // Appel de la méthode
+        pokemonTrainerFactory.createTrainer("Brock", Team.MYSTIC, pokedexFactoryMock);
+
+        // Vérifie que la méthode createPokedex a bien été appelée avec les bons paramètres
+        verify(pokedexFactoryMock).createPokedex(any(IPokemonMetadataProvider.class), any(IPokemonFactory.class));
     }
 }
