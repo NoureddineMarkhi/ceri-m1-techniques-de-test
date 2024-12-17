@@ -79,4 +79,23 @@ public class IPokedexTest {
     public void testCreatePokemonNotImplemented() {
         assertNull(pokedex.createPokemon(0, 613, 64, 4000, 4), "createPokemon is not implemented and should return null");
     }
+    @Test
+    public void testGetPokemonMetadataReturnsNull() {
+        // Test de la méthode non implémentée
+        assertNull(pokedex.getPokemonMetadata(0), "getPokemonMetadata should return null");
+    }
+
+    @Test
+    public void testCreatePokemonReturnsNull() {
+        // Test de la méthode non implémentée
+        assertNull(pokedex.createPokemon(0, 500, 60, 2000, 3), "createPokemon should return null");
+    }
+
+    @Test
+    public void testGetPokemonThrowsExceptionOnNegativeId() {
+        // Vérifier que l'exception est levée pour un ID négatif
+        PokedexException exception = assertThrows(PokedexException.class, () -> pokedex.getPokemon(-1));
+        assertEquals("Invalid ID", exception.getMessage());
+    }
+
 }
