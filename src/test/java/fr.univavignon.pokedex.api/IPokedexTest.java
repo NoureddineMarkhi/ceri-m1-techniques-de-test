@@ -13,14 +13,11 @@ public class IPokedexTest {
 
     private Pokedex pokedex;
     private Pokemon pokemonMock;
-    private PokemonMetadata metadataMock;
 
     @BeforeEach
     public void setUp() {
-        // Initialisation du Pokedex et des mocks
         pokedex = new Pokedex();
         pokemonMock = mock(Pokemon.class);
-        metadataMock = mock(PokemonMetadata.class);
     }
 
     @Test
@@ -33,17 +30,17 @@ public class IPokedexTest {
     @Test
     public void testGetPokemonValid() throws PokedexException {
         pokedex.addPokemon(pokemonMock);
-        Pokemon result = pokedex.getPokemon(0);
-        assertNotNull(result);
+        assertEquals(pokemonMock, pokedex.getPokemon(0));
     }
 
     @Test
     public void testGetPokemonInvalid() {
-        assertThrows(PokedexException.class, () -> pokedex.getPokemon(0));
+        assertThrows(PokedexException.class, () -> pokedex.getPokemon(1));
     }
 
     @Test
     public void testGetPokemons() {
+        assertTrue(pokedex.getPokemons().isEmpty());
         pokedex.addPokemon(pokemonMock);
         List<Pokemon> pokemons = pokedex.getPokemons();
         assertEquals(1, pokemons.size());
@@ -51,20 +48,29 @@ public class IPokedexTest {
 
     @Test
     public void testGetPokemonsWithComparator() {
-        pokedex.addPokemon(pokemonMock);
-        List<Pokemon> sorted = pokedex.getPokemons(Comparator.comparing(Pokemon::getName));
-        assertEquals(1, sorted.size());
+        Pokemon pokemon1 = new Pokemon(0, "Bulbizarre", 126, 126, 90, 613, 64, 4000, 4, 56.0);
+        Pokemon pokemon2 = new Pokemon(1, "Aquali", 186, 168, 260, 2729, 202, 5000, 4, 100.0);
+
+        pokedex.addPokemon(pokemon2);
+        pokedex.addPokemon(pokemon1);
+
+        List<Pokemon> sortedPokemons = pokedex.getPokemons(Comparator.comparing(Pokemon::getName));
+        assertEquals("Aquali", sortedPokemons.get(0).getName());
+        assertEquals("Bulbizarre", sortedPokemons.get(1).getName());
     }
 
     @Test
     public void testGetPokemonMetadata() {
-        // Tester la méthode même si elle retourne null
         assertNull(pokedex.getPokemonMetadata(0));
     }
 
     @Test
     public void testCreatePokemon() {
-        // Tester la méthode même si elle retourne null
         assertNull(pokedex.createPokemon(0, 100, 50, 1000, 4));
+    }
+
+    @Test
+    public void testEmptyPokedexSize() {
+        assertEquals(0, pokedex.size());
     }
 }
