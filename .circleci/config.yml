@@ -10,6 +10,7 @@ jobs:
       - restore_cache:
           key: cache-{{ checksum "pom.xml" }}
 
+
       # Compilation et génération des rapports JaCoCo
       - run:
           name: Run Maven Tests with Coverage
