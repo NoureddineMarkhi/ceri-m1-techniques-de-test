@@ -10,7 +10,6 @@ jobs:
       - restore_cache:
           key: cache-{{ checksum "pom.xml" }}
 
-
       # Compilation et génération des rapports JaCoCo
       - run:
           name: Run Maven Tests with Coverage
@@ -38,17 +37,33 @@ jobs:
             chmod +x codecov
             ./codecov -t $CODECOV_TOKEN -f target/site/jacoco/jacoco.xml
 
-workflows:
-  build-and-test:
-    jobs:
-      - test-java
-
-
   checkstyle:
     docker:
       - image: cimg/openjdk:17.0
     steps:
       - checkout
+      - restore_cache:
+          key: cache-{{ checksum "pom.xml" }}
+
+      # Exécution de Checkstyle pour valider la qualité du code
       - run:
           name: Checkstyle Validation
           command: mvn checkstyle:check
+
+      - save_cache:
+          key: cache-{{ checksum "pom.xml" }}
+          paths:
+            - ~/.m2/repository
+
+      # Stocker les rapports Checkstyle
+      - store_artifacts:
+          path: target/checkstyle-result.xml
+          destination: checkstyle-report
+
+workflows:
+  build-and-test:
+    jobs:
+      - test-java
+      - checkstyle:
+          requires:
+            - test-java
