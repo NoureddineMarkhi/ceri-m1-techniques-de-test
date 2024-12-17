@@ -53,5 +53,6 @@ public class IPokedexTest {
         pokedex.addPokemon(pokemonMock);
         List<Pokemon> sorted = pokedex.getPokemons(Comparator.comparingInt(Pokemon::getCp));
         assertEquals(1, sorted.size());
+
     }
 }
