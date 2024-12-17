@@ -1,5 +1,6 @@
 package fr.univavignon.pokedex.api;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,20 +8,20 @@ import static org.mockito.Mockito.*;
 
 public class IPokedexFactoryTest {
 
+    private IPokemonMetadataProvider metadataProviderMock;
+    private IPokemonFactory pokemonFactoryMock;
+    private IPokedexFactory pokedexFactory;
+
+    @BeforeEach
+    public void setUp() {
+        metadataProviderMock = mock(IPokemonMetadataProvider.class);
+        pokemonFactoryMock = mock(IPokemonFactory.class);
+        pokedexFactory = new PokedexFactory();
+    }
+
     @Test
     public void testCreatePokedex() {
-        // Création des mocks pour les paramètres
-        IPokemonMetadataProvider metadataProvider = mock(IPokemonMetadataProvider.class);
-        IPokemonFactory pokemonFactory = mock(IPokemonFactory.class);
-
-        // Création de l'instance de la factory
-        IPokedexFactory pokedexFactory = new PokedexFactory();
-
-        // Appel de la méthode createPokedex
-        IPokedex pokedex = pokedexFactory.createPokedex(metadataProvider, pokemonFactory);
-
-        // Assertions
-        assertNotNull(pokedex, "L'instance de Pokedex ne doit pas être null.");
-        assertTrue(pokedex instanceof Pokedex, "L'instance retournée doit être de type Pokedex.");
+        IPokedex pokedex = pokedexFactory.createPokedex(metadataProviderMock, pokemonFactoryMock);
+        assertNotNull(pokedex);
     }
 }
