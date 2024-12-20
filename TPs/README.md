@@ -6,7 +6,8 @@ IA
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/EhXjGu6NS4af4Q4T46kqk4/JDLGy8q4t2ehBvrgtSPBth/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/EhXjGu6NS4af4Q4T46kqk4/JDLGy8q4t2ehBvrgtSPBth/tree/main)
 ### Un badge pour la couverture de test :
 [![codecov](https://codecov.io/gh/NoureddineMarkhi/ceri-m1-techniques-de-test/branch/main/graph/badge.svg)](https://codecov.io/gh/NoureddineMarkhi/ceri-m1-techniques-de-test)
-
+### Un badge pour checkstyle
+![Checkstyle](https://github.com/NoureddineMarkhi/ceri-m1-techniques-de-test/actions/workflows/checkstyle.yml/badge.svg)
 # Documentation du projet **Pokedex API**
 
 ---
@@ -27,12 +28,6 @@ IA
 
 Le projet est organisé selon une architecture **Modulaire et Orientée Objet** :
 
-### **2.1. Structure des dossiers**
-
-src/ ├── main/ │ └── java/ │ └── fr/ │ └── univavignon/ │ └── pokedex/ │ └── api/ │ ├── interfaces/ │ │ ├── IPokedex.java │ │ ├── IPokemonFactory.java │ │ ├── IPokemonMetadataProvider.java │ │ └── IPokemonTrainerFactory.java │ ├── implementations/ │ │ ├── Pokedex.java │ │ ├── PokemonFactory.java │ │ ├── PokemonMetadataProvider.java │ │ └── PokemonTrainerFactory.java │ └── utils/ │ └── PokemonComparators.java │ └── test/ └── java/ └── fr/ └── univavignon/ └── pokedex/ └── api/ ├── IPokedexTest.java ├── IPokemonFactoryTest.java ├── IPokemonMetadataProviderTest.java ├── IPokemonTrainerFactoryTest.java └── PokedexTest.java
-
-markdown
-Copier le code
 
 ### **2.2. Description des composants**
 

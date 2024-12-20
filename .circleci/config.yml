@@ -60,6 +60,16 @@ jobs:
           path: target/checkstyle-result.xml
           destination: checkstyle-report
 
+      # Génération d'un rapport HTML pour Checkstyle
+      - run:
+          name: Generate Checkstyle HTML Report
+          command: mvn checkstyle:checkstyle
+
+      # Stocker le rapport HTML de Checkstyle
+      - store_artifacts:
+          path: target/site
+          destination: checkstyle-html-report
+
 workflows:
   build-and-test:
     jobs:
