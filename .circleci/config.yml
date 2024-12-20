@@ -1,6 +1,32 @@
 version: 2.1
 
 jobs:
+  publish-docs:
+    docker:
+      - image: cimg/openjdk:17.0
+    steps:
+      - checkout
+      - run:
+          name: Configure Git with Token Authentication
+          command: |
+            git config --global user.name "NoureddineMarkhi"
+            git config --global user.email "markhi.noureddine@gmail.com"
+            echo "https://${DEP_TOKEN}@github.com" > ~/.git-credentials
+            cat ~/.git-credentials
+            git config credential.helper store
+      - run:
+          name: Generate Javadoc
+          command: mvn javadoc:javadoc
+      - run:
+          name: Deploy Javadoc to GitHub Pages
+          command: |
+            git clone --branch gh-pages https://$DEP_TOKEN@github.com/NoureddineMarkhi/ceri-m1-techniques-de-test.git gh-pages
+            rm -rf gh-pages/*
+            cp -r target/site/apidocs/* gh-pages/
+            cd gh-pages
+            git add .
+            git commit -m "Update Javadoc [skip ci]"
+            git push origin gh-pages
   test-java:
     docker:
       - image: cimg/openjdk:17.0
@@ -70,6 +96,22 @@ jobs:
           path: target/site
           destination: checkstyle-html-report
 
+      # Génération et stockage du badge Checkstyle
+      - run:
+          name: Generate Checkstyle Badge
+          command: |
+            mkdir -p badges
+            ERRORS=$(grep '<error' target/checkstyle-result.xml | wc -l)
+            if [ "$ERRORS" -eq 0 ]; then
+              curl -o badges/checkstyle.svg "https://img.shields.io/badge/Checkstyle-Pass-green"
+            else
+              curl -o badges/checkstyle.svg "https://img.shields.io/badge/Checkstyle-Fail-red"
+            fi
+
+      - store_artifacts:
+          path: badges
+          destination: checkstyle-badge
+
 workflows:
   build-and-test:
     jobs:
@@ -77,3 +119,5 @@ workflows:
       - checkstyle:
           requires:
             - test-java
+      - publish-docs:
+          - test-java
