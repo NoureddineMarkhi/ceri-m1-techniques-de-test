@@ -4,12 +4,13 @@ Noureddine Markhi
 IA
 ### Un badge pour CircleCI :
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/EhXjGu6NS4af4Q4T46kqk4/JDLGy8q4t2ehBvrgtSPBth/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/EhXjGu6NS4af4Q4T46kqk4/JDLGy8q4t2ehBvrgtSPBth/tree/main)
+![img_2.png](img_2.png)
 ### Un badge pour la couverture de test :
 
 
 [![codecov](https://codecov.io/gh/NoureddineMarkhi/ceri-m1-techniques-de-test/branch/main/graph/badge.svg?token=9a7ecc3b-0d99-4362-bb0c-9a4e26afe8a8)](https://codecov.io/gh/NoureddineMarkhi/ceri-m1-techniques-de-test)
 
-
+![img_1.png](img_1.png)
 ### Un badge pour checkstyle
 ![Checkstyle](https://github.com/NoureddineMarkhi/ceri-m1-techniques-de-test/actions/workflows/checkstyle.yml/badge.svg)
 ### Lien de Javadoc
@@ -69,44 +70,6 @@ public class PokemonFactory implements IPokemonFactory {
 }
 ```
 
-### **3.2 Tests unitaires avec Mockito
-Les tests utilisent Mockito pour isoler les comportements et éviter les dépendances aux implémentations concrètes.
-Exemple de test avec mock :
-
-![img.png](img.png)
-
-IPokemonFactory factory = mock(IPokemonFactory.class);
-when(factory.createPokemon(1, 500, 100, 3000, 3))
-    .thenReturn(new Pokemon(1, "Pikachu", 55, 40, 35, 500, 100, 3000, 3, 80.0));
-
-```
-
-### **3.3 Comparateurs de tri
-Les Pokémons peuvent être triés par :
-
-Nom (NAME)
-Index (INDEX)
-CP (CP)
-Ces comparateurs sont implémentés via un enum pour simplifier l'accès et l'utilisation :
-
-``` java
-
-public enum PokemonComparators implements Comparator<Pokemon> {
-    NAME(Comparator.comparing(Pokemon::getName)),
-    INDEX(Comparator.comparing(Pokemon::getIndex)),
-    CP(Comparator.comparing(Pokemon::getCp));
-
-    private final Comparator<Pokemon> delegate;
-
-    PokemonComparators(Comparator<Pokemon> delegate) {
-        this.delegate = delegate;
-    }
-
-    @Override
-    public int compare(Pokemon first, Pokemon second) {
-        return delegate.compare(first, second);
-    }
-}
 
 
 ### **4. Conclusion
