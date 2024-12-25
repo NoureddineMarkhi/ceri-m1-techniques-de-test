@@ -5,13 +5,9 @@ IA
 ### Un badge pour CircleCI :
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/EhXjGu6NS4af4Q4T46kqk4/JDLGy8q4t2ehBvrgtSPBth/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/EhXjGu6NS4af4Q4T46kqk4/JDLGy8q4t2ehBvrgtSPBth/tree/main)
 ### Un badge pour la couverture de test :
-[![codecov](https://codecov.io/gh/NoureddineMarkhi/ceri-m1-techniques-de-test/branch/main/graph/badge.svg)](https://codecov.io/gh/NoureddineMarkhi/ceri-m1-techniques-de-test)
 
-# My Simple Project
 
 [![codecov](https://codecov.io/gh/NoureddineMarkhi/ceri-m1-techniques-de-test/branch/main/graph/badge.svg?token=9a7ecc3b-0d99-4362-bb0c-9a4e26afe8a8)](https://codecov.io/gh/NoureddineMarkhi/ceri-m1-techniques-de-test)
-
-A simple Java project using Maven, with Codecov integration.
 
 
 ### Un badge pour checkstyle
