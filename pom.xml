@@ -95,7 +95,7 @@
                 </executions>
                 <configuration>
                     <configLocation>google_checks.xml</configLocation>
-                    <encoding>UTF-8</encoding>
+
                     <consoleOutput>true</consoleOutput>
                     <failsOnError>true</failsOnError>
                 </configuration>
@@ -113,17 +113,16 @@
                             <goal>javadoc</goal>
                         </goals>
                         <phase>package</phase>
-                        <configuration>
-                            <encoding>UTF-8</encoding>
-                            <docencoding>UTF-8</docencoding>
-                            <charSet>UTF-8</charSet>
-                            <show>protected</show>
-                            <quiet>true</quiet>
-                        </configuration>
                     </execution>
                 </executions>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <docencoding>UTF-8</docencoding>
+                    <charSet>UTF-8</charSet>
+                    <show>protected</show>
+                    <quiet>true</quiet>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-
 </project>
