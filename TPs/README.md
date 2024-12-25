@@ -6,8 +6,18 @@ IA
 [![CircleCI](https://dl.circleci.com/status-badge/img/circleci/EhXjGu6NS4af4Q4T46kqk4/JDLGy8q4t2ehBvrgtSPBth/tree/main.svg?style=svg)](https://dl.circleci.com/status-badge/redirect/circleci/EhXjGu6NS4af4Q4T46kqk4/JDLGy8q4t2ehBvrgtSPBth/tree/main)
 ### Un badge pour la couverture de test :
 [![codecov](https://codecov.io/gh/NoureddineMarkhi/ceri-m1-techniques-de-test/branch/main/graph/badge.svg)](https://codecov.io/gh/NoureddineMarkhi/ceri-m1-techniques-de-test)
+
+# My Simple Project
+
+[![codecov](https://codecov.io/gh/NoureddineMarkhi/ceri-m1-techniques-de-test/branch/main/graph/badge.svg?token=9a7ecc3b-0d99-4362-bb0c-9a4e26afe8a8)](https://codecov.io/gh/NoureddineMarkhi/ceri-m1-techniques-de-test)
+
+A simple Java project using Maven, with Codecov integration.
+
+
 ### Un badge pour checkstyle
 ![Checkstyle](https://github.com/NoureddineMarkhi/ceri-m1-techniques-de-test/actions/workflows/checkstyle.yml/badge.svg)
+### Lien de Javadoc
+https://noureddinemarkhi.github.io/ceri-m1-techniques-de-test/fr/univavignon/pokedex/api/package-summary.html
 # Documentation du projet **Pokedex API**
 
 ---
@@ -67,7 +77,7 @@ public class PokemonFactory implements IPokemonFactory {
 Les tests utilisent Mockito pour isoler les comportements et éviter les dépendances aux implémentations concrètes.
 Exemple de test avec mock :
 
-```java
+![img.png](img.png)
 
 IPokemonFactory factory = mock(IPokemonFactory.class);
 when(factory.createPokemon(1, 500, 100, 3000, 3))
@@ -101,16 +111,7 @@ public enum PokemonComparators implements Comparator<Pokemon> {
         return delegate.compare(first, second);
     }
 }
-```
-### **3.4. Gestion des exceptions
-Les erreurs (ex. ID invalide) sont gérées via une exception personnalisée PokedexException :
 
-```java
-
-if (!POKEMON_METADATA_DB.containsKey(index)) {
-    throw new PokedexException("Invalid Pokémon index: " + index);
-}
-```
 
 ### **4. Conclusion
 Le projet Pokedex API est conçu pour être modulaire, testable et maintenable.
