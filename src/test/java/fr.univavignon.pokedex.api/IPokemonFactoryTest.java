@@ -1,5 +1,6 @@
 package fr.univavignon.pokedex.api;
 
+import fr.univavignon.pokedex.api.RocketPokemonFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -8,14 +9,19 @@ import java.util.Comparator;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Classe de test pour l'interface IPokemonFactory et ses implémentations.
+ */
 public class IPokemonFactoryTest {
 
     private IPokemonFactory pokemonFactoryMock; // Mock de l'interface
+    private RocketPokemonFactory rocketPokemonFactory; // Implémentation réelle pour RocketPokemonFactory
 
     @BeforeEach
     public void setUp() {
-        // Initialiser le mock avant chaque test
+        // Initialiser le mock et l'implémentation réelle
         pokemonFactoryMock = mock(IPokemonFactory.class);
+        rocketPokemonFactory = new RocketPokemonFactory();
     }
 
     @Test
@@ -123,11 +129,6 @@ public class IPokemonFactoryTest {
         assertTrue(PokemonComparators.CP.compare(pokemon1, pokemon2) < 0);
     }
 
-    /**
-     * Test supplémentaire pour couvrir le code interne de PokemonFactory.
-     * Ici, on n'utilise pas le mock, on crée une instance concrète de PokemonFactory
-     * et on appelle la méthode createPokemon pour couvrir les lignes de code internes.
-     */
     @Test
     public void testRealPokemonFactoryImplementation() {
         IPokemonFactory realFactory = new PokemonFactory();
@@ -136,18 +137,47 @@ public class IPokemonFactoryTest {
         Pokemon p1 = realFactory.createPokemon(0, 613, 64, 4000, 4);
         assertNotNull(p1);
         assertEquals("Pokemon-0", p1.getName());
-        assertEquals(100, p1.getAttack());  // 100 + 0
+        assertEquals(100, p1.getAttack());
         assertEquals(100, p1.getDefense());
         assertEquals(100, p1.getStamina());
-        assertEquals((100+100+100)/3.0, p1.getIv(), 0.01);
+        assertEquals((100 + 100 + 100) / 3.0, p1.getIv(), 0.01);
 
-        // Test avec un autre index pour s'assurer que le code est bien exécuté
         Pokemon p2 = realFactory.createPokemon(10, 700, 70, 5000, 5);
         assertNotNull(p2);
         assertEquals("Pokemon-10", p2.getName());
-        assertEquals(110, p2.getAttack());  // 100 + 10
+        assertEquals(110, p2.getAttack());
         assertEquals(110, p2.getDefense());
         assertEquals(110, p2.getStamina());
-        assertEquals((110+110+110)/3.0, p2.getIv(), 0.01);
+        assertEquals((110 + 110 + 110) / 3.0, p2.getIv(), 0.01);
+    }
+
+    // === Tests ajoutés pour RocketPokemonFactory ===
+
+    @Test
+    public void testRocketPokemonFactoryNegativeIndex() {
+        Pokemon pokemon = rocketPokemonFactory.createPokemon(-1, 500, 100, 3000, 3);
+        assertNotNull(pokemon);
+        assertEquals("Ash's Pikachu", pokemon.getName());
+        assertEquals(1000, pokemon.getAttack());
+        assertEquals(1000, pokemon.getDefense());
+        assertEquals(1000, pokemon.getStamina());
+        assertEquals(0.0, pokemon.getIv(), 0.01);
+    }
+
+    @Test
+    public void testRocketPokemonFactoryUnknownIndex() {
+        Pokemon pokemon = rocketPokemonFactory.createPokemon(999, 500, 100, 3000, 3);
+        assertNotNull(pokemon);
+        assertEquals("MISSINGNO", pokemon.getName());
+    }
+
+    @Test
+    public void testRocketPokemonFactoryRandomStats() {
+        Pokemon pokemon = rocketPokemonFactory.createPokemon(1, 500, 100, 3000, 3);
+        assertNotNull(pokemon);
+        assertTrue(pokemon.getAttack() >= 0 && pokemon.getAttack() <= 15);
+        assertTrue(pokemon.getDefense() >= 0 && pokemon.getDefense() <= 15);
+        assertTrue(pokemon.getStamina() >= 0 && pokemon.getStamina() <= 15);
+        assertEquals(1.0, pokemon.getIv(), 0.01);
     }
 }
