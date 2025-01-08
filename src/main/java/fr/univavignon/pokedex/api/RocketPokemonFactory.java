@@ -22,15 +22,10 @@ public class RocketPokemonFactory implements IPokemonFactory {
     }
 
     private static int generateRandomStat() {
-        int total = 0;
-        for(int i=0; i < 1000000; i++)
-        {
-            Random rn = new Random();
-            int r = rn.nextInt(2);
-            total = total + r;
-        }
-        return total / 10000;
+        Random random = new Random();
+        return random.nextInt(101); // Génère une valeur entre 0 et 100
     }
+
 
     @Override
     public Pokemon createPokemon(int index, int cp, int hp, int dust, int candy) {
